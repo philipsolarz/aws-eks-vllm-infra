@@ -52,5 +52,4 @@ module "eks" {
 
 module "helm" {
   source = "../../modules/helm"
-  # kubernetes_api_endpoint = "https://${module.servers.public_ips[0]}:6443"
 }

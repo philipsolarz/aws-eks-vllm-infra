@@ -1,0 +1,3 @@
+clusterName: eu-north-1-dev-eks
+serviceAccount:
+  name: aws-load-balancer-controller
