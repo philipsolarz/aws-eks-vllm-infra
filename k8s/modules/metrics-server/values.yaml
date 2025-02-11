@@ -1,7 +1,7 @@
----
-defaultArgs:
-  - --cert-dir=/tmp
-  - --kubelet-preferred-address-types=InternalIP,ExternalIP,Hostname
-  - --kubelet-user-node-status-port
-  - --metric-resolution=15s
-  - --secure-port=10250
+metrics-server:
+  defaultArgs:
+    - --cert-dir=/tmp
+    - --kubelet-preferred-address-types=InternalIP,ExternalIP,Hostname
+    - --kubelet-user-node-status-port
+    - --metric-resolution=15s
+    - --secure-port=10250
