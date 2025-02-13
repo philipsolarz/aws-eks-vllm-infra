@@ -1,0 +1,10 @@
+apiVersion: v2
+name: llm
+description: A Helm chart for deploying a distributed LLM application with Ray and vLLM on EKS.
+type: application
+version: 0.1.0
+appVersion: "0.1.0"
+dependencies:
+  - name: ray-cluster
+    version: 1.2.2
+    repository: https://ray-project.github.io/kuberay-helm/
