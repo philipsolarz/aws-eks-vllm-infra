@@ -9,6 +9,11 @@ resource "helm_release" "app_of_apps" {
   name  = "app-of-apps"
   chart = "${path.module}/../../../k8s/"
 
+  set {
+    name  = "helm.sh/release.storage"
+    value = "secretStorage=none"
+  }
+
   depends_on = [helm_release.argo-cd]
 }
 

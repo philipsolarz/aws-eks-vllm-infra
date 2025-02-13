@@ -4,8 +4,6 @@ kind: Application
 metadata:
   name: app-of-apps
   namespace: argo-cd
-  annotations:
-    helm.sh/resource-policy: keep
 spec:
   project: default
   source:
@@ -30,8 +28,6 @@ kind: Application
 metadata:
   name: argo-cd
   namespace: argo-cd
-  annotations:
-    helm.sh/resource-policy: keep
 spec:
   project: default
   source:
@@ -56,8 +52,6 @@ kind: Application
 metadata:
   name: metrics-server
   namespace: argo-cd
-  annotations:
-    helm.sh/resource-policy: keep
 spec:
   project: default
   source:
@@ -80,8 +74,6 @@ kind: Application
 metadata:
   name: aws-load-balancer-controller
   namespace: argo-cd
-  annotations:
-    helm.sh/resource-policy: keep
 spec:
   project: default
   source:
@@ -104,8 +96,6 @@ kind: Application
 metadata:
   name: ingress-nginx
   namespace: argo-cd
-  annotations:
-    helm.sh/resource-policy: keep
 spec:
   project: default
   source:
@@ -130,8 +120,6 @@ kind: Application
 metadata:
   name: cert-manager
   namespace: argo-cd
-  annotations:
-    helm.sh/resource-policy: keep
 spec:
   project: default
   source:
@@ -156,8 +144,6 @@ kind: Application
 metadata:
   name: argo-workflows
   namespace: argo-cd
-  annotations:
-    helm.sh/resource-policy: keep
 spec:
   project: default
   source:
@@ -182,8 +168,6 @@ kind: Application
 metadata:
   name: kube-prometheus
   namespace: argo-cd
-  annotations:
-    helm.sh/resource-policy: keep
 spec:
   project: default
   source:
@@ -208,8 +192,6 @@ kind: Application
 metadata:
   name: nvidia-device-plugin
   namespace: argo-cd
-  annotations:
-    helm.sh/resource-policy: keep
 spec:
   project: default
   source:
