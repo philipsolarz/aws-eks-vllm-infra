@@ -1,9 +1,9 @@
 output "cluster_name" {
   description = "Name of the EKS cluster."
-  value       = module.eks_cluster.cluster_name
+  value       = aws_eks_cluster.eks.name
 }
 
 output "cluster_endpoint" {
   description = "EKS Cluster endpoint URL."
-  value       = module.eks_cluster.cluster_endpoint
+  value       = aws_eks_cluster.eks.endpoint
 }
