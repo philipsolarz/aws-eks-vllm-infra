@@ -27,6 +27,7 @@ module "vpc" {
 
   public_subnet_tags  = var.public_subnet_tags
   private_subnet_tags = var.private_subnet_tags
+
 }
 
 module "eks" {
@@ -48,8 +49,12 @@ module "eks" {
   gpu_scaling_config = var.gpu_scaling_config
 
   enable_cluster_creator_admin_permissions = var.enable_cluster_creator_admin_permissions
+
+  depends_on = [module.vpc]
 }
 
 module "helm" {
   source = "../../modules/helm"
+
+  depends_on = [module.eks]
 }
