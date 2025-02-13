@@ -3,6 +3,7 @@ resource "helm_release" "argo-cd" {
   chart            = "${path.module}/../../../k8s/modules/argo-cd"
   namespace        = "argo-cd"
   create_namespace = true
+
 }
 
 resource "helm_release" "app_of_apps" {

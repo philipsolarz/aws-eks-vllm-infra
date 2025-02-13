@@ -2,3 +2,4 @@ aws-load-balancer-controller:
   clusterName: eu-north-1-dev-eks
   serviceAccount:
     name: aws-load-balancer-controller
+  vpcId: eu-north-1-dev-vpc
