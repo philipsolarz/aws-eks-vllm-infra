@@ -4,4 +4,4 @@ karpenter:
     interruptionQueue: eu-north-1-dev-eks
   serviceAccount:
     annotations:
-      eks.amazonaws.com/role-arn: arn:aws:iam::270387482367:role/KarpenterController-20250214155847156500000005
+      eks.amazonaws.com/role-arn: arn:aws:iam::270387482367:role/KarpenterController-20250214174236450000000004
