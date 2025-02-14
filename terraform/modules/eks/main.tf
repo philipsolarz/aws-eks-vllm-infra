@@ -371,32 +371,6 @@ resource "aws_iam_role" "karpenter_controller" {
   assume_role_policy = data.aws_iam_policy_document.karpenter_controller_assume_role.json
 }
 
-# resource "aws_iam_policy" "karpenter_controller_policy" {
-#   name = "${var.region}-${var.environment}-karpenter-controller-policy"
-#   policy = jsonencode({
-#     Version = "2012-10-17",
-#     Statement = [
-#       {
-#         Effect = "Allow",
-#         Action = [
-#           "ec2:DescribeAvailabilityZones",
-#           "ec2:DescribeInstances",
-#           "ec2:DescribeInstanceTypes",
-#           "ec2:DescribeLaunchTemplateVersions",
-#           "ec2:DescribeSecurityGroups",
-#           "ec2:DescribeSubnets",
-#           "ec2:DescribeTags",
-#           "ec2:DescribeVolumes",
-#           "ec2:RunInstances",
-#           "ec2:TerminateInstances",
-#           "iam:PassRole"
-#         ],
-#         Resource = "*"
-#       }
-#     ]
-#   })
-# }
-
 data "aws_caller_identity" "current" {}
 
 
@@ -436,6 +410,7 @@ resource "aws_iam_role_policy_attachment" "karpenter_controller_attach" {
   role       = aws_iam_role.karpenter_controller.name
   policy_arn = aws_iam_policy.karpenter_controller_policy.arn
 }
+
 
 
 
