@@ -3,5 +3,5 @@ karpenter:
     clusterName: eu-north-1-dev-eks
     interruptionQueue: eu-north-1-dev-eks
   serviceAccount:
-    annotations:
-      eks.amazonaws.com/role-arn: arn:aws:iam::270387482367:role/KarpenterController-20250214174236450000000004
+    create: false
+    name: karpenter

@@ -1,6 +1,6 @@
 external-secrets:
   serviceAccount:
-    create: true
+    create: false
     name: external-secrets
-    annotations:
-      eks.amazonaws.com/role-arn: arn:aws:iam::270387482367:role/eu-north-1-dev-eks-external-secrets
+    # annotations:
+    #   eks.amazonaws.com/role-arn: arn:aws:iam::270387482367:role/eu-north-1-dev-eks-external-secrets

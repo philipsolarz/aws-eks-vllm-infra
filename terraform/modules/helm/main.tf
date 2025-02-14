@@ -1,3 +1,31 @@
+resource "kubernetes_namespace" "external_secrets" {
+  metadata {
+    name = "external-secrets"
+  }
+}
+
+resource "kubernetes_service_account" "external_secrets" {
+  depends_on = [kubernetes_namespace.external_secrets]
+
+  metadata {
+    name      = "external-secrets"
+    namespace = kubernetes_namespace.external_secrets.metadata[0].name
+    annotations = {
+      "eks.amazonaws.com/role-arn" = var.external_secrets_role_arn
+    }
+  }
+}
+
+resource "kubernetes_service_account" "karpenter" {
+  metadata {
+    name      = "karpenter"
+    namespace = "kube-system"
+    annotations = {
+      "eks.amazonaws.com/role-arn" = var.karpenter_role_arn
+    }
+  }
+}
+
 resource "helm_release" "argo-cd" {
   name             = "argo-cd"
   chart            = "${path.module}/../../../k8s/modules/argo-cd"
