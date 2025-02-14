@@ -349,10 +349,21 @@ output "external_secrets_role_arn" {
 
 
 
+module "karpenter" {
+  source = "terraform-aws-modules/eks/aws//modules/karpenter"
 
+  cluster_name = aws_eks_cluster.eks.name
 
+  create_node_iam_role = false
+  node_iam_role_arn    = aws_iam_role.nodes.arn
 
+  create_access_entry = false
 
+  tags = {
+    Environment = "dev"
+    Terraform   = "true"
+  }
+}
 
 
 
