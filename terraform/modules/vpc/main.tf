@@ -57,6 +57,7 @@ resource "aws_subnet" "private_zones" {
     Name                                                         = "${var.region}-${var.environment}-private-${count.index}"
     "kubernetes.io/role/internal-elb"                            = "1"
     "kubernetes.io/cluster/${var.region}-${var.environment}-eks" = "owned"
+    "karpenter.sh/discovery"                                     = "${var.region}-${var.environment}-eks"
   }
 
 }
@@ -132,4 +133,15 @@ resource "aws_route_table_association" "public" {
   count          = length(var.public_subnet_cidrs)
   subnet_id      = aws_subnet.public_zones[count.index].id
   route_table_id = aws_route_table.public.id
+}
+
+
+resource "aws_security_group" "karpenter" {
+  name   = "${var.region}-${var.environment}-karpenter-sg"
+  vpc_id = aws_vpc.main.id
+
+  tags = {
+    "Name"                   = "${var.region}-${var.environment}-karpenter-sg"
+    "karpenter.sh/discovery" = "${var.region}-${var.environment}-eks"
+  }
 }
