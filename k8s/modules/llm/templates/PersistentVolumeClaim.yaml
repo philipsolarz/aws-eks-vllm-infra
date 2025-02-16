@@ -9,5 +9,5 @@ spec:
   resources:
     requests:
       storage: 50Gi
-  storageClassName: default
+  storageClassName: gp2
   volumeMode: Filesystem
