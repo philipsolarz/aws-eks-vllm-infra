@@ -5,7 +5,7 @@ metadata:
 spec:
   amiFamily: AL2
   amiSelectorTerms:
-    - alias: al2
+    - alias: al2@v20250203
   role: "eu-north-1-dev-eks-nodes"
   subnetSelectorTerms:
     - tags:
