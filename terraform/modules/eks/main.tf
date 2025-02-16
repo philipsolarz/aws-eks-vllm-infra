@@ -375,7 +375,6 @@ resource "aws_iam_role" "karpenter_controller" {
 
 data "aws_caller_identity" "current" {}
 
-
 resource "aws_iam_policy" "karpenter_controller_policy" {
   name = "${var.region}-${var.environment}-karpenter-controller-policy"
   policy = jsonencode({
@@ -399,6 +398,17 @@ resource "aws_iam_policy" "karpenter_controller_policy" {
         Resource = "*"
       },
       {
+        Effect = "Allow",
+        Action = [
+          "iam:GetInstanceProfile",
+          "iam:CreateInstanceProfile",
+          "iam:AddRoleToInstanceProfile",
+          "iam:RemoveRoleFromInstanceProfile",
+          "iam:DeleteInstanceProfile"
+        ],
+        Resource = "*"
+      },
+      {
         Effect   = "Allow",
         Action   = "eks:DescribeCluster",
         Resource = "arn:aws:eks:${var.region}:${data.aws_caller_identity.current.account_id}:cluster/${var.region}-${var.environment}-eks"
@@ -406,7 +416,6 @@ resource "aws_iam_policy" "karpenter_controller_policy" {
     ]
   })
 }
-
 
 resource "aws_iam_role_policy_attachment" "karpenter_controller_attach" {
   role       = aws_iam_role.karpenter_controller.name

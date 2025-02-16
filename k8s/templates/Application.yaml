@@ -306,52 +306,52 @@ spec:
       selfHeal: true
     syncOptions:
       - CreateNamespace=true
----
-apiVersion: argoproj.io/v1alpha1
-kind: Application
-metadata:
-  name: kuberay-operator
-  namespace: argo-cd
-spec:
-  project: default
-  source:
-    repoURL: https://github.com/philipsolarz/aws-eks-vllm-infra.git
-    targetRevision: main
-    path: k8s/modules/kuberay-operator
-    helm:
-      valueFiles:
-        - values.yaml
-  destination:
-    server: https://kubernetes.default.svc
-    namespace: kuberay-operator
-  syncPolicy:
-    automated:
-      prune: true
-      selfHeal: true
-    syncOptions:
-      - CreateNamespace=true
+# ---
+# apiVersion: argoproj.io/v1alpha1
+# kind: Application
+# metadata:
+#   name: kuberay-operator
+#   namespace: argo-cd
+# spec:
+#   project: default
+#   source:
+#     repoURL: https://github.com/philipsolarz/aws-eks-vllm-infra.git
+#     targetRevision: main
+#     path: k8s/modules/kuberay-operator
+#     helm:
+#       valueFiles:
+#         - values.yaml
+#   destination:
+#     server: https://kubernetes.default.svc
+#     namespace: kuberay-operator
+#   syncPolicy:
+#     automated:
+#       prune: true
+#       selfHeal: true
+#     syncOptions:
+#       - CreateNamespace=true
 
----
-apiVersion: argoproj.io/v1alpha1
-kind: Application
-metadata:
-  name: llm
-  namespace: argo-cd
-spec:
-  project: default
-  source:
-    repoURL: https://github.com/philipsolarz/aws-eks-vllm-infra.git
-    targetRevision: main
-    path: k8s/modules/llm
-    helm:
-      valueFiles:
-        - values.yaml
-  destination:
-    server: https://kubernetes.default.svc
-    namespace: llm
-  syncPolicy:
-    automated:
-      prune: true
-      selfHeal: true
-    syncOptions:
-      - CreateNamespace=true
+# ---
+# apiVersion: argoproj.io/v1alpha1
+# kind: Application
+# metadata:
+#   name: llm
+#   namespace: argo-cd
+# spec:
+#   project: default
+#   source:
+#     repoURL: https://github.com/philipsolarz/aws-eks-vllm-infra.git
+#     targetRevision: main
+#     path: k8s/modules/llm
+#     helm:
+#       valueFiles:
+#         - values.yaml
+#   destination:
+#     server: https://kubernetes.default.svc
+#     namespace: llm
+#   syncPolicy:
+#     automated:
+#       prune: true
+#       selfHeal: true
+#     syncOptions:
+#       - CreateNamespace=true
