@@ -12,14 +12,11 @@ spec:
       requirements:
         - key: "karpenter.k8s.aws/instance-family"
           operator: In
-          values: ["g5", "g6", "p4", "p5"]  # Added more GPU families
+          values: ["g5"]
         - key: "karpenter.k8s.aws/instance-size"
           operator: In
-          values: ["xlarge", "2xlarge", "4xlarge", "8xlarge", "16xlarge"]  # More instance sizes
+          values: ["2xlarge", "4xlarge"]
         - key: "karpenter.sh/capacity-type"
           operator: In
-          values: ["spot", "on-demand"]  # Allows fallback to On-Demand
-        - key: "topology.kubernetes.io/zone"
-          operator: In
-          values: ["eu-north-1a", "eu-north-1b", "eu-north-1c", "eu-west-1a"]  # More zones
+          values: ["spot", "on-demand"]
       expireAfter: "72h"
