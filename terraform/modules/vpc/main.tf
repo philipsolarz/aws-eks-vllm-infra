@@ -1,30 +1,3 @@
-# module "vpc" {
-#   source = "terraform-aws-modules/vpc/aws"
-
-#   name = "${var.region}-${var.environment}-vpc"
-#   cidr = var.cidr_block
-
-#   enable_dns_support   = var.enable_dns_support
-#   enable_dns_hostnames = var.enable_dns_hostnames
-
-#   tags = {
-#     "Name" = "${var.region}-${var.environment}-vpc"
-#   }
-
-#   azs             = var.availability_zones
-#   private_subnets = var.private_subnet_cidrs
-#   public_subnets  = var.public_subnet_cidrs
-
-#   enable_nat_gateway = var.enable_nat_gateway
-#   single_nat_gateway = var.single_nat_gateway
-
-#   enable_vpn_gateway = var.enable_vpn_gateway
-
-#   public_subnet_tags = var.public_subnet_tags
-
-#   private_subnet_tags = var.private_subnet_tags
-# }
-
 resource "aws_vpc" "main" {
   cidr_block = var.cidr_block
 
@@ -145,3 +118,43 @@ resource "aws_security_group" "karpenter" {
     "karpenter.sh/discovery" = "${var.region}-${var.environment}-eks"
   }
 }
+
+resource "aws_vpc_endpoint" "ssm" {
+  vpc_id              = aws_vpc.main.id
+  service_name        = "com.amazonaws.${var.region}.ssm"
+  vpc_endpoint_type   = "Interface"
+  security_group_ids  = [aws_security_group.karpenter.id]
+  subnet_ids          = aws_subnet.private_zones[*].id
+  private_dns_enabled = true
+
+  tags = {
+    Name = "${var.region}-${var.environment}-ssm-endpoint"
+  }
+}
+
+resource "aws_vpc_endpoint" "ssm_messages" {
+  vpc_id              = aws_vpc.main.id
+  service_name        = "com.amazonaws.${var.region}.ssmmessages"
+  vpc_endpoint_type   = "Interface"
+  security_group_ids  = [aws_security_group.karpenter.id]
+  subnet_ids          = aws_subnet.private_zones[*].id
+  private_dns_enabled = true
+
+  tags = {
+    Name = "${var.region}-${var.environment}-ssm-messages-endpoint"
+  }
+}
+
+resource "aws_vpc_endpoint" "ec2_messages" {
+  vpc_id              = aws_vpc.main.id
+  service_name        = "com.amazonaws.${var.region}.ec2messages"
+  vpc_endpoint_type   = "Interface"
+  security_group_ids  = [aws_security_group.karpenter.id]
+  subnet_ids          = aws_subnet.private_zones[*].id
+  private_dns_enabled = true
+
+  tags = {
+    Name = "${var.region}-${var.environment}-ec2-messages-endpoint"
+  }
+}
+

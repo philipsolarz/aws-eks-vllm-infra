@@ -75,6 +75,11 @@ resource "aws_iam_role_policy_attachment" "amazon_ec2_container_registry_read_on
   role       = aws_iam_role.nodes.name
 }
 
+resource "aws_iam_role_policy_attachment" "amazon_ssm_managed_instance_core" {
+  policy_arn = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
+  role       = aws_iam_role.nodes.name
+}
+
 resource "aws_eks_node_group" "general" {
   cluster_name    = aws_eks_cluster.eks.name
   version         = var.cluster_version
@@ -397,7 +402,8 @@ resource "aws_iam_policy" "karpenter_controller_policy" {
           "ec2:RunInstances",
           "ec2:TerminateInstances",
           "ec2:DescribeSpotPriceHistory",
-          "ec2:DescribeInstanceTypeOfferings"
+          "ec2:DescribeInstanceTypeOfferings",
+          "ec2:DescribeLaunchTemplates"
         ],
         Resource = "*"
       },
