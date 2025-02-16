@@ -35,8 +35,8 @@ spec:
         - name: HUGGING_FACE_HUB_TOKEN
           valueFrom:
             secretKeyRef:
-              name: hf-token-secret
-              key: token
+              name: huggingface.co
+              key: HUGGING_FACE_HUB_TOKEN
         ports:
         - containerPort: 8000
         resources:

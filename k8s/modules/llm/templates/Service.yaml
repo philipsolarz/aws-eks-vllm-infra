@@ -9,7 +9,6 @@ spec:
     port: 80
     protocol: TCP
     targetPort: 8000
-  # The label selector should match the deployment labels & it is useful for prefix caching feature
   selector:
     app: mistral-7b
   sessionAffinity: None
