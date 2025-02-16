@@ -383,63 +383,84 @@ resource "aws_iam_role" "karpenter_controller" {
 
 data "aws_caller_identity" "current" {}
 
-resource "aws_iam_policy" "karpenter_controller_policy" {
-  name = "${var.region}-${var.environment}-karpenter-controller-policy"
-  policy = jsonencode({
-    Version = "2012-10-17",
-    Statement = [
-      {
-        Effect = "Allow",
-        Action = [
-          "ec2:DescribeAvailabilityZones",
-          "ec2:DescribeInstances",
-          "ec2:DescribeInstanceTypes",
-          "ec2:DescribeLaunchTemplateVersions",
-          "ec2:DescribeSecurityGroups",
-          "ec2:DescribeSubnets",
-          "ec2:DescribeTags",
-          "ec2:DescribeVolumes",
-          "ec2:RunInstances",
-          "ec2:TerminateInstances",
-          "ec2:DescribeSpotPriceHistory",
-          "ec2:DescribeInstanceTypeOfferings",
-          "ec2:DescribeLaunchTemplates"
-        ],
-        Resource = "*"
-      },
-      {
-        Effect = "Allow",
-        Action = [
-          "iam:GetInstanceProfile",
-          "iam:CreateInstanceProfile",
-          "iam:AddRoleToInstanceProfile",
-          "iam:RemoveRoleFromInstanceProfile",
-          "iam:DeleteInstanceProfile",
-          "iam:PassRole",
-          "iam:TagInstanceProfile"
-        ],
-        Resource = "*"
-      },
-      {
-        Effect = "Allow",
-        Action = [
-          "pricing:GetProducts"
-        ],
-        Resource = "*"
-      },
-      {
-        Effect   = "Allow",
-        Action   = "eks:DescribeCluster",
-        Resource = "arn:aws:eks:${var.region}:${data.aws_caller_identity.current.account_id}:cluster/${var.region}-${var.environment}-eks"
-      }
-    ]
-  })
+# resource "aws_iam_policy" "karpenter_controller_policy" {
+#   name = "${var.region}-${var.environment}-karpenter-controller-policy"
+#   policy = jsonencode({
+#     Version = "2012-10-17",
+#     Statement = [
+#       {
+#         Effect = "Allow",
+#         Action = [
+#           "ec2:DescribeLaunchTemplateVersions",
+#           "ec2:DescribeVolumes",
+#           "ec2:DescribeImages",
+#           "ec2:DescribeSpotPriceHistory",
+#           "ec2:DescribeInstanceTypeOfferings",
+#           "ec2:DescribeLaunchTemplates",
+#           "ec2:CreateLaunchTemplate",
+#         ],
+#         Resource = "*"
+#       },
+#       {
+#         Effect = "Allow",
+#         Action = [
+#           "iam:GetInstanceProfile",
+#           "iam:CreateInstanceProfile",
+#           "iam:AddRoleToInstanceProfile",
+#           "iam:RemoveRoleFromInstanceProfile",
+#           "iam:DeleteInstanceProfile",
+#           "iam:PassRole",
+#           "iam:TagInstanceProfile"
+#         ],
+#         Resource = "*"
+#       },
+#       {
+#         Effect = "Allow",
+#         Action = [
+#           "pricing:GetProducts"
+#         ],
+#         Resource = "*"
+#       },
+#       {
+#         Effect   = "Allow",
+#         Action   = "eks:DescribeCluster",
+#         Resource = "arn:aws:eks:${var.region}:${data.aws_caller_identity.current.account_id}:cluster/${var.region}-${var.environment}-eks"
+#       }
+#     ]
+#   })
+# }
+
+data "template_file" "karpenter_controller_policy" {
+  template = file("${path.module}/policies/KarpenterController.json.tpl")
+
+  vars = {
+    region        = var.region
+    cluster_name  = "${var.region}-${var.environment}-eks"
+    account_id    = data.aws_caller_identity.current.account_id
+    node_role_arn = aws_iam_role.nodes.arn
+  }
 }
+
+resource "aws_iam_policy" "karpenter_controller_policy" {
+  name   = "${var.region}-${var.environment}-karpenter-controller-policy"
+  policy = data.template_file.karpenter_controller_policy.rendered
+}
+
 
 
 resource "aws_iam_role_policy_attachment" "karpenter_controller_attach" {
   role       = aws_iam_role.karpenter_controller.name
   policy_arn = aws_iam_policy.karpenter_controller_policy.arn
+}
+
+resource "aws_iam_role_policy_attachment" "karpenter_managed_policy" {
+  policy_arn = "arn:aws:iam::aws:policy/AmazonEKSWorkerNodePolicy"
+  role       = aws_iam_role.karpenter_controller.name
+}
+
+resource "aws_iam_role_policy_attachment" "karpenter_ssm" {
+  policy_arn = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
+  role       = aws_iam_role.karpenter_controller.name
 }
 
 
