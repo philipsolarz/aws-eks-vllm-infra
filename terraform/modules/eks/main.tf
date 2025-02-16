@@ -393,7 +393,8 @@ resource "aws_iam_policy" "karpenter_controller_policy" {
           "ec2:DescribeVolumes",
           "ec2:RunInstances",
           "ec2:TerminateInstances",
-          "iam:PassRole"
+          "ec2:DescribeSpotPriceHistory",
+          "ec2:DescribeInstanceTypeOfferings"
         ],
         Resource = "*"
       },
@@ -404,7 +405,16 @@ resource "aws_iam_policy" "karpenter_controller_policy" {
           "iam:CreateInstanceProfile",
           "iam:AddRoleToInstanceProfile",
           "iam:RemoveRoleFromInstanceProfile",
-          "iam:DeleteInstanceProfile"
+          "iam:DeleteInstanceProfile",
+          "iam:PassRole",
+          "iam:TagInstanceProfile"
+        ],
+        Resource = "*"
+      },
+      {
+        Effect = "Allow",
+        Action = [
+          "pricing:GetProducts"
         ],
         Resource = "*"
       },
@@ -416,6 +426,7 @@ resource "aws_iam_policy" "karpenter_controller_policy" {
     ]
   })
 }
+
 
 resource "aws_iam_role_policy_attachment" "karpenter_controller_attach" {
   role       = aws_iam_role.karpenter_controller.name
